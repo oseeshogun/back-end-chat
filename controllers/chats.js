@@ -13,4 +13,19 @@ const getChatMessages = (req, res) => {
     .catch((err) => res.status(400).json({ err }))
 }
 
-module.exports = { getChatMessages }
+const getAllFirstMessages = (req, res) => {
+  const { id } = req.user
+
+  ChatModel.find({
+    chatId: { $regex: id },
+  })
+    .then((chats) => {
+      const messages = chats
+        .filter((chat) => chat.messages.length > 0)
+        .map((chat) => ({ message: chat.messages[0], chatId: chat.chatId }))
+      return res.json(messages)
+    })
+    .catch((err) => res.status(400).json({ err }))
+}
+
+module.exports = { getChatMessages, getAllFirstMessages }
