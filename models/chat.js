@@ -52,6 +52,7 @@ ChatSchema.methods.addMessage = async function (message) {
   chat.messages.push({
     localId: message.id,
     text: message.text,
+    image: message.image,
     sender: new ObjectId(message.sender.id),
     receiver: new ObjectId(message.receiver.id),
   })

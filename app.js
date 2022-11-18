@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
     const { receiver, sender } = data
     const chatId = [receiver.id, sender.id].sort().join('')
     const message = { ...data, chatId }
+    console.log(message)
     socket.to(receiver.id).emit('new_text', message)
     const chat = await findOrCreateChat(chatId)
     chat.addMessage(message)

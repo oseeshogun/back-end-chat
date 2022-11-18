@@ -22,7 +22,7 @@ const getAllFirstMessages = (req, res) => {
     .then((chats) => {
       const messages = chats
         .filter((chat) => chat.messages.length > 0)
-        .map((chat) => ({ message: chat.messages[0], chatId: chat.chatId }))
+        .map((chat) => ({ message: chat.messages[chat.messages.length-1], chatId: chat.chatId }))
       return res.json(messages)
     })
     .catch((err) => res.status(400).json({ err }))
