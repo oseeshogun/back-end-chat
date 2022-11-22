@@ -10,6 +10,9 @@ const secureRoute = require('./routes/secure_routes')
 const usersRoute = require('./routes/users')
 const chatsRoute = require('./routes/chats')
 const { findOrCreateChat } = require('./models/utils')
+const jwt = require('jsonwebtoken')
+const UserModel = require('./models/user')
+const ObjectId = require('mongoose').Types.ObjectId
 
 const app = express()
 
@@ -38,6 +41,15 @@ app.use('/chats', passport.authenticate('jwt', { session: false }), chatsRoute)
 app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   res.json({ error: err })
+})
+
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token
+  const decoded = jwt.verify(token, config.TOP_SECRET)
+  const { id } = decoded.user
+  UserModel.findOne({ _id: { $ne: new ObjectId(id) } })
+    .then((user) => next())
+    .catch((err) => console.log(err))
 })
 
 io.on('connection', (socket) => {

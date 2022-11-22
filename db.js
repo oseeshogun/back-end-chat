@@ -6,6 +6,7 @@ const uri = `mongodb+srv://${config.DB_USER}:${config.DB_PASSWORD}@cluster0.ujw2
 mongoose
   .connect(uri, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then(() => console.log('Connexion done !'))
   .catch((err) => console.log(err))

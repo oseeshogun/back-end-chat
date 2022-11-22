@@ -25,8 +25,6 @@ const changeProfil = async (req, res) => {
   const { id } = req.user
   const { url } = req.body
 
-  console.log(id, url)
-
   UserModal.findOneAndUpdate(
     { _id: { $ne: new ObjectId(id) } },
     { avatar: url }
